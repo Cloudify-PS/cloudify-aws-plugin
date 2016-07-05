@@ -93,7 +93,7 @@ class AwsBase(object):
                         {
                             relationship.type:
                                 relationship.target.instance
-                                    .runtime_properties.get(
+                                .runtime_properties.get(
                                         constants.EXTERNAL_RESOURCE_ID)
                         }
                 )
@@ -127,9 +127,9 @@ class AwsBaseRelationship(AwsBase):
         self.source_resource_id = \
             ctx.source.instance.runtime_properties.get(
                     constants.EXTERNAL_RESOURCE_ID, None) if \
-                constants.EXTERNAL_RESOURCE_ID in \
-                ctx.source.instance.runtime_properties.keys() else \
-                ctx.source.node.properties['resource_id']
+            constants.EXTERNAL_RESOURCE_ID in \
+            ctx.source.instance.runtime_properties.keys() else \
+            ctx.source.node.properties['resource_id']
         self.target_resource_id = ctx.target.instance.runtime_properties.get(
                 constants.EXTERNAL_RESOURCE_ID, None) if \
             constants.EXTERNAL_RESOURCE_ID in \
@@ -146,8 +146,8 @@ class AwsBaseRelationship(AwsBase):
 
         ctx.logger.info(
                 'Attempting to associate {0} with {1}.'
-                    .format(self.source_resource_id,
-                            self.target_resource_id))
+                .format(self.source_resource_id,
+                        self.target_resource_id))
 
         if self.use_source_external_resource_naively() \
                 or self.associate():
@@ -156,8 +156,8 @@ class AwsBaseRelationship(AwsBase):
         raise NonRecoverableError(
                 'Source is neither external resource, '
                 'nor Cloudify resource, unable to associate {0} with {1}.'
-                    .format(self.source_resource_id,
-                            self.target_resource_id))
+                .format(self.source_resource_id,
+                        self.target_resource_id))
 
     def use_source_external_resource_naively(self):
 
@@ -173,7 +173,7 @@ class AwsBaseRelationship(AwsBase):
         ctx.logger.info(
                 'Assuming {0} is external, because the user '
                 'specified use_external_resource.Not associating it with {1}.'
-                    .format(resource.id, self.target_resource_id))
+                .format(resource.id, self.target_resource_id))
 
         return True
 
@@ -184,7 +184,7 @@ class AwsBaseRelationship(AwsBase):
 
         ctx.logger.info(
                 'Attempting to disassociate {0} from {1}.'
-                    .format(self.source_resource_id, self.target_resource_id))
+                .format(self.source_resource_id, self.target_resource_id))
 
         if self.disassociate_external_resource_naively() \
                 or self.disassociate():
@@ -193,7 +193,7 @@ class AwsBaseRelationship(AwsBase):
         raise NonRecoverableError(
                 'Source is neither external resource, '
                 'nor Cloudify resource, unable to disassociate {0} from {1}.'
-                    .format(self.source_resource_id, self.target_resource_id))
+                .format(self.source_resource_id, self.target_resource_id))
 
     def disassociate_external_resource_naively(self):
 
@@ -205,7 +205,7 @@ class AwsBaseRelationship(AwsBase):
         ctx.logger.info(
                 'Assuming {0} is external, because the user specified '
                 'use_external_resource. Not disassociating it with {1}.'
-                    .format(resource.id, self.target_resource_id))
+                .format(resource.id, self.target_resource_id))
 
         return True
 
@@ -220,7 +220,7 @@ class AwsBaseRelationship(AwsBase):
         resource = self.filter_for_single_resource(
                 self.source_get_all_handler['function'],
                 {self.source_get_all_handler['argument']:
-                     self.source_resource_id},
+                 self.source_resource_id},
         )
 
         return resource
@@ -265,13 +265,13 @@ class AwsBaseNode(AwsBase):
             raise NonRecoverableError(
                     'External resource, but the supplied {0} '
                     'does not exist in the account.'
-                        .format(self.aws_resource_type))
+                    .format(self.aws_resource_type))
 
         if not self.is_external_resource and resource:
             raise NonRecoverableError(
                     'Not external resource, but the supplied {0}'
                     'exists in the account.'
-                        .format(self.aws_resource_type))
+                    .format(self.aws_resource_type))
 
     def create(self):
         return False
@@ -280,8 +280,8 @@ class AwsBaseNode(AwsBase):
 
         ctx.logger.info(
                 'Attempting to create {0} {1}.'
-                    .format(self.aws_resource_type,
-                            self.cloudify_node_instance_id))
+                .format(self.aws_resource_type,
+                        self.cloudify_node_instance_id))
 
         if self.use_external_resource_naively() or self.create():
             return self.post_create()
@@ -297,8 +297,8 @@ class AwsBaseNode(AwsBase):
 
         ctx.logger.info(
                 'Attempting to add {0} {1}.'
-                    .format(self.aws_resource_type,
-                            self.cloudify_node_instance_id))
+                .format(self.aws_resource_type,
+                        self.cloudify_node_instance_id))
 
         if self.use_external_resource_naively() or self.create():
             return self.post_create()
@@ -318,7 +318,7 @@ class AwsBaseNode(AwsBase):
         ctx.logger.info(
                 'Assuming {0} is external, because the user '
                 'specified use_external_resource.'
-                    .format(self.aws_resource_type))
+                .format(self.aws_resource_type))
 
         return True
 
@@ -329,7 +329,7 @@ class AwsBaseNode(AwsBase):
 
         ctx.logger.info(
                 'Attempting to start instance {0}.'
-                    .format(self.cloudify_node_instance_id))
+                .format(self.cloudify_node_instance_id))
 
         if self.use_external_resource_naively() or self.start():
             return self.post_start()
@@ -341,8 +341,8 @@ class AwsBaseNode(AwsBase):
 
         ctx.logger.info(
                 'Attempting to modify instance attributes {0} {1}.'
-                    .format(self.aws_resource_type,
-                            self.cloudify_node_instance_id))
+                .format(self.aws_resource_type,
+                        self.cloudify_node_instance_id))
 
         if self.modify_attributes(new_attributes):
             return self.post_modify()
@@ -354,8 +354,8 @@ class AwsBaseNode(AwsBase):
 
         ctx.logger.info(
                 'Attempting to stop EC2 instance {0} {1}.'
-                    .format(self.aws_resource_type,
-                            self.cloudify_node_instance_id))
+                .format(self.aws_resource_type,
+                        self.cloudify_node_instance_id))
 
         if self.stop():
             return self.post_stop()
@@ -367,8 +367,8 @@ class AwsBaseNode(AwsBase):
 
         ctx.logger.info(
                 'Attempting to delete {0} {1}.'
-                    .format(self.aws_resource_type,
-                            self.cloudify_node_instance_id))
+                .format(self.aws_resource_type,
+                        self.cloudify_node_instance_id))
 
         if not self.get_resource():
             self.raise_forbidden_external_resource(self.resource_id)
@@ -396,8 +396,8 @@ class AwsBaseNode(AwsBase):
         ctx.logger.info(
                 'Assuming {0} is external, because the user '
                 'specified use_external_resource. Not deleting {0}.'
-                    .format(self.aws_resource_type,
-                            self.resource_id))
+                .format(self.aws_resource_type,
+                        self.resource_id))
 
         return True
 
@@ -430,7 +430,9 @@ class AwsBaseNode(AwsBase):
             self._tag_resource(resource, 'Name', uuid.uuid4())
 
         self._tag_resource(resource, 'resource_id', ctx.instance.id)
-        self._tag_resource(resource, 'deployment_id', ctx.deployment.id)
+        deployment = ctx.deployment.id
+        if deployment:
+            self._tag_resource(resource, 'deployment_id', deployment)
 
     def _tag_resource(self, resource, tag_key, tag_value):
 
@@ -449,7 +451,7 @@ class AwsBaseNode(AwsBase):
 
         ctx.logger.info(
                 'Added {0} {1} to Cloudify.'
-                    .format(self.aws_resource_type, self.resource_id))
+                .format(self.aws_resource_type, self.resource_id))
 
         return True
 
@@ -457,7 +459,7 @@ class AwsBaseNode(AwsBase):
 
         ctx.logger.info(
                 'Stopped {0} {1}.'
-                    .format(self.aws_resource_type, self.resource_id))
+                .format(self.aws_resource_type, self.resource_id))
 
         return True
 
@@ -475,7 +477,7 @@ class AwsBaseNode(AwsBase):
 
         ctx.logger.info(
                 'Removed {0} {1} from Cloudify.'
-                    .format(self.aws_resource_type, self.resource_id))
+                .format(self.aws_resource_type, self.resource_id))
 
         return True
 
@@ -486,7 +488,7 @@ class AwsBaseNode(AwsBase):
 
         ctx.logger.info(
                 'Terminated {0} {1}.'
-                    .format(self.aws_resource_type, self.resource_id))
+                .format(self.aws_resource_type, self.resource_id))
 
         return True
 
@@ -494,7 +496,7 @@ class AwsBaseNode(AwsBase):
 
         ctx.logger.info(
                 'Modified {0} {1}.'
-                    .format(self.aws_resource_type, self.resource_id))
+                .format(self.aws_resource_type, self.resource_id))
         return True
 
 
@@ -568,7 +570,7 @@ class RouteMixin(object):
                 ctx.logger.info(
                         'Could not delete route: {0} route not '
                         'found on route_table.'
-                            .format(route, route_table_id))
+                        .format(route, route_table_id))
                 return True
             raise NonRecoverableError('{0}'.format(str(e)))
 
