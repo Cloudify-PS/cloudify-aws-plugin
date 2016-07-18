@@ -51,6 +51,9 @@ data_types:
           The endpoint for the given ELB region.
         type: string
         required: false
+      validate_certs:
+        type: boolean
+        required: false
 
   cloudify.datatypes.aws.Route:
     properties:
